@@ -1,0 +1,9 @@
+﻿CREATE TABLE Card
+(
+	card_id numeric(8) IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	card_no varchar(15) NOT NULL,
+	customer_id numeric(8),
+	card_type varchar(1),
+	start_date datetime,
+	end_date datetime
+);
