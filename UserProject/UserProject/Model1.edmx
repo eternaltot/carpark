@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DatabaseProjectModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="DatabaseProjectModelStoreContainer">
+          <EntitySet Name="Card" EntityType="DatabaseProjectModel.Store.Card" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="MEMBER" EntityType="DatabaseProjectModel.Store.MEMBER" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Movement" EntityType="DatabaseProjectModel.Store.Movement" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Card_MEMBER" Association="DatabaseProjectModel.Store.FK_Card_MEMBER">
+            <End Role="MEMBER" EntitySet="MEMBER" />
+            <End Role="Card" EntitySet="Card" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Movement_Card" Association="DatabaseProjectModel.Store.FK_Movement_Card">
+            <End Role="Card" EntitySet="Card" />
+            <End Role="Movement" EntitySet="Movement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Movement_Movement" Association="DatabaseProjectModel.Store.FK_Movement_Movement">
+            <End Role="MEMBER" EntitySet="MEMBER" />
+            <End Role="Movement" EntitySet="Movement" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Card">
+          <Key>
+            <PropertyRef Name="card_id" />
+          </Key>
+          <Property Name="card_id" Type="numeric" Nullable="false" Precision="8" StoreGeneratedPattern="Identity" />
+          <Property Name="card_no" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="customer_id" Type="int" />
+          <Property Name="card_type" Type="varchar" MaxLength="5" />
+          <Property Name="start_date" Type="datetime" />
+          <Property Name="end_date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="MEMBER">
+          <Key>
+            <PropertyRef Name="MEMBER_ID" />
+          </Key>
+          <Property Name="MEMBER_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MEMBER_NAME" Type="varchar" MaxLength="50" />
+          <Property Name="MEMBER_LASTNAME" Type="varchar" MaxLength="50" />
+          <Property Name="MEMBER_TYPE" Type="char" MaxLength="1" />
+          <Property Name="MEMBER_TEL" Type="varchar" MaxLength="20" />
+          <Property Name="MEMBER_CITIZEN_CODE" Type="varchar" MaxLength="13" />
+          <Property Name="MEMBER_ADDRESS" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Movement">
+          <Key>
+            <PropertyRef Name="movement_id" />
+          </Key>
+          <Property Name="movement_id" Type="numeric" Nullable="false" Precision="8" StoreGeneratedPattern="Identity" />
+          <Property Name="start_date" Type="datetime" />
+          <Property Name="end_date" Type="datetime" />
+          <Property Name="card_id" Type="numeric" Precision="8" />
+          <Property Name="customer_id" Type="int" />
+          <Property Name="CAR_NO_OTHER" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK_Card_MEMBER">
+          <End Role="MEMBER" Type="DatabaseProjectModel.Store.MEMBER" Multiplicity="0..1" />
+          <End Role="Card" Type="DatabaseProjectModel.Store.Card" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEMBER">
+              <PropertyRef Name="MEMBER_ID" />
+            </Principal>
+            <Dependent Role="Card">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Movement_Card">
+          <End Role="Card" Type="DatabaseProjectModel.Store.Card" Multiplicity="0..1" />
+          <End Role="Movement" Type="DatabaseProjectModel.Store.Movement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Card">
+              <PropertyRef Name="card_id" />
+            </Principal>
+            <Dependent Role="Movement">
+              <PropertyRef Name="card_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Movement_Movement">
+          <End Role="MEMBER" Type="DatabaseProjectModel.Store.MEMBER" Multiplicity="0..1" />
+          <End Role="Movement" Type="DatabaseProjectModel.Store.Movement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEMBER">
+              <PropertyRef Name="MEMBER_ID" />
+            </Principal>
+            <Dependent Role="Movement">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DatabaseProjectModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="DatabaseProjectEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cards" EntityType="DatabaseProjectModel.Card" />
+          <EntitySet Name="MEMBERs" EntityType="DatabaseProjectModel.MEMBER" />
+          <AssociationSet Name="FK_Card_MEMBER" Association="DatabaseProjectModel.FK_Card_MEMBER">
+            <End Role="MEMBER" EntitySet="MEMBERs" />
+            <End Role="Card" EntitySet="Cards" />
+          </AssociationSet>
+          <EntitySet Name="Movements" EntityType="DatabaseProjectModel.Movement" />
+          <AssociationSet Name="FK_Movement_Card" Association="DatabaseProjectModel.FK_Movement_Card">
+            <End Role="Card" EntitySet="Cards" />
+            <End Role="Movement" EntitySet="Movements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Movement_Movement" Association="DatabaseProjectModel.FK_Movement_Movement">
+            <End Role="MEMBER" EntitySet="MEMBERs" />
+            <End Role="Movement" EntitySet="Movements" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Card">
+          <Key>
+            <PropertyRef Name="card_id" />
+          </Key>
+          <Property Name="card_id" Type="Decimal" Nullable="false" Precision="8" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="card_no" Type="String" Nullable="false" MaxLength="15" Unicode="false" FixedLength="false" />
+          <Property Name="customer_id" Type="Int32" />
+          <Property Name="card_type" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="start_date" Type="DateTime" />
+          <Property Name="end_date" Type="DateTime" />
+          <NavigationProperty Name="MEMBER" Relationship="DatabaseProjectModel.FK_Card_MEMBER" FromRole="Card" ToRole="MEMBER" />
+          <NavigationProperty Name="Movements" Relationship="DatabaseProjectModel.FK_Movement_Card" FromRole="Card" ToRole="Movement" />
+        </EntityType>
+        <EntityType Name="MEMBER">
+          <Key>
+            <PropertyRef Name="MEMBER_ID" />
+          </Key>
+          <Property Name="MEMBER_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MEMBER_NAME" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="MEMBER_LASTNAME" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="MEMBER_TYPE" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
+          <Property Name="MEMBER_TEL" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="MEMBER_CITIZEN_CODE" Type="String" MaxLength="13" Unicode="false" FixedLength="false" />
+          <Property Name="MEMBER_ADDRESS" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Cards" Relationship="DatabaseProjectModel.FK_Card_MEMBER" FromRole="MEMBER" ToRole="Card" />
+          <NavigationProperty Name="Movements" Relationship="DatabaseProjectModel.FK_Movement_Movement" FromRole="MEMBER" ToRole="Movement" />
+        </EntityType>
+        <Association Name="FK_Card_MEMBER">
+          <End Role="MEMBER" Type="DatabaseProjectModel.MEMBER" Multiplicity="0..1" />
+          <End Role="Card" Type="DatabaseProjectModel.Card" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEMBER">
+              <PropertyRef Name="MEMBER_ID" />
+            </Principal>
+            <Dependent Role="Card">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Movement">
+          <Key>
+            <PropertyRef Name="movement_id" />
+          </Key>
+          <Property Type="Decimal" Name="movement_id" Nullable="false" Precision="8" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="start_date" />
+          <Property Type="DateTime" Name="end_date" />
+          <Property Type="Decimal" Name="card_id" Precision="8" Scale="0" />
+          <Property Type="Int32" Name="customer_id" />
+          <NavigationProperty Name="Card" Relationship="DatabaseProjectModel.FK_Movement_Card" FromRole="Movement" ToRole="Card" />
+          <NavigationProperty Name="MEMBER" Relationship="DatabaseProjectModel.FK_Movement_Movement" FromRole="Movement" ToRole="MEMBER" />
+          <Property Type="String" Name="CAR_NO_OTHER" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_Movement_Card">
+          <End Type="DatabaseProjectModel.Card" Role="Card" Multiplicity="0..1" />
+          <End Type="DatabaseProjectModel.Movement" Role="Movement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Card">
+              <PropertyRef Name="card_id" />
+            </Principal>
+            <Dependent Role="Movement">
+              <PropertyRef Name="card_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Movement_Movement">
+          <End Type="DatabaseProjectModel.MEMBER" Role="MEMBER" Multiplicity="0..1" />
+          <End Type="DatabaseProjectModel.Movement" Role="Movement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEMBER">
+              <PropertyRef Name="MEMBER_ID" />
+            </Principal>
+            <Dependent Role="Movement">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DatabaseProjectModelStoreContainer" CdmEntityContainer="DatabaseProjectEntities">
+          <EntitySetMapping Name="Cards">
+            <EntityTypeMapping TypeName="DatabaseProjectModel.Card">
+              <MappingFragment StoreEntitySet="Card">
+                <ScalarProperty Name="card_id" ColumnName="card_id" />
+                <ScalarProperty Name="card_no" ColumnName="card_no" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="card_type" ColumnName="card_type" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MEMBERs">
+            <EntityTypeMapping TypeName="DatabaseProjectModel.MEMBER">
+              <MappingFragment StoreEntitySet="MEMBER">
+                <ScalarProperty Name="MEMBER_ID" ColumnName="MEMBER_ID" />
+                <ScalarProperty Name="MEMBER_NAME" ColumnName="MEMBER_NAME" />
+                <ScalarProperty Name="MEMBER_LASTNAME" ColumnName="MEMBER_LASTNAME" />
+                <ScalarProperty Name="MEMBER_TYPE" ColumnName="MEMBER_TYPE" />
+                <ScalarProperty Name="MEMBER_TEL" ColumnName="MEMBER_TEL" />
+                <ScalarProperty Name="MEMBER_CITIZEN_CODE" ColumnName="MEMBER_CITIZEN_CODE" />
+                <ScalarProperty Name="MEMBER_ADDRESS" ColumnName="MEMBER_ADDRESS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Movements">
+            <EntityTypeMapping TypeName="DatabaseProjectModel.Movement">
+              <MappingFragment StoreEntitySet="Movement">
+                <ScalarProperty Name="CAR_NO_OTHER" ColumnName="CAR_NO_OTHER" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="card_id" ColumnName="card_id" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="movement_id" ColumnName="movement_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Model1">
+        <EntityTypeShape EntityType="DatabaseProjectModel.Card" Width="1.5" PointX="3.75" PointY="1" Height="2.5571907552083331" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseProjectModel.MEMBER" Width="1.5" PointX="0.75" PointY="1" Height="2.5571907552083326" IsExpanded="true" />
+        <AssociationConnector Association="DatabaseProjectModel.FK_Card_MEMBER" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="2.2785953776041667" />
+          <ConnectorPoint PointX="3.75" PointY="2.2785953776041667" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="DatabaseProjectModel.Movement" Width="1.5" PointX="6.625" PointY="1.25" Height="2.3648893229166656" />
+        <AssociationConnector Association="DatabaseProjectModel.FK_Movement_Card" >
+          <ConnectorPoint PointX="5.25" PointY="2.4035953776041667" />
+          <ConnectorPoint PointX="6.625" PointY="2.4035953776041667" />
+        </AssociationConnector>
+        <AssociationConnector Association="DatabaseProjectModel.FK_Movement_Movement" >
+          <ConnectorPoint PointX="2.25" PointY="3.7494921875" />
+          <ConnectorPoint PointX="2.625" PointY="4.1244921875" />
+          <ConnectorPoint PointX="2.625" PointY="3.9898893229166656" />
+          <ConnectorPoint PointX="6.25" PointY="3.9898893229166656" />
+          <ConnectorPoint PointX="6.625" PointY="3.6148893229166656" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
